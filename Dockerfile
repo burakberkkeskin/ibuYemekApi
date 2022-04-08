@@ -3,6 +3,7 @@ WORKDIR /app
 COPY go.* /app/
 RUN go mod download
 COPY . /app/
+RUN apk add git
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -o /app/ibuYemekApi
 
 FROM alpine:3.15
