@@ -10,19 +10,20 @@ import (
 )
 
 func GetLunch(c *fiber.Ctx) error {
-	log.Println("GetLaunch Request For", c.Params("day"))
-	lunch, err := cache.GetLunch(c.Params("day"))
 
-	if err != nil {
+	log.Println("GetLaunch Request For", c.Params("day"))
+	day := c.Params("day")
+
+	if cache.CheckDate(&day) == false {
 		response := responses.LunchResponse{
 			Status:  http.StatusBadRequest,
 			Message: "Error",
-			Data:    &fiber.Map{"data": err.Error()},
+			Data:    &fiber.Map{"data": "Wrong Day"},
 		}
 		return c.Status(http.StatusBadRequest).JSON(&response)
-	} else if lunch.AnaYemek == "" {
+	} else if cache.IsEmpty(c.Params("day")) {
 		response := responses.LunchResponse{
-			Status:  http.StatusBadRequest,
+			Status:  http.StatusNotFound,
 			Message: "Error",
 			Data:    &fiber.Map{"data": "Yemek Bulunamadı"},
 		}
@@ -31,7 +32,7 @@ func GetLunch(c *fiber.Ctx) error {
 		response := responses.LunchResponse{
 			Status:  http.StatusOK,
 			Message: "Success",
-			Data:    lunch,
+			Data:    cache.GetLunch(&day),
 		}
 		return c.Status(http.StatusOK).JSON(&response)
 	}
