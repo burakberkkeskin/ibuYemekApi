@@ -11,7 +11,7 @@ pipeline{
 
     stage('docker build') {
       steps {
-        sh 'docker build -t safderun/ibuYemekApi:latest .'
+        sh 'docker build -t safderun/ibu-yemek-api:latest .'
       }
     }
 
