@@ -23,8 +23,8 @@ pipeline{
       steps{
         script{
           echo 'checking branch'
-          echo '${GIT_BRANCH}'
-          if ('${GIT_BRANCH}' == 'master') {
+          echo ${GIT_BRANCH}
+          if ('${GIT_BRANCH}' == 'origin/master') {
             echo 'pushing to dockerhub'
             sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
             sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
