@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"errors"
 	"ibu-yemek-api/models"
 	"ibu-yemek-api/services"
 
@@ -11,16 +10,34 @@ import (
 var lunchToday models.Lunch
 var lunchTomorrow models.Lunch
 
-func GetLunch(day string) (*models.Lunch, error) {
+func GetLunch(day *string) *models.Lunch {
 
-	if day == "today" {
-		return &lunchToday, nil
-	} else if day == "tomorrow" {
-		return &lunchTomorrow, nil
+	if *day == "today" {
+		return &lunchToday
+	} else if *day == "tomorrow" {
+		return &lunchTomorrow
 	} else {
-		return nil, errors.New("False Day")
+		return nil
 	}
 
+}
+
+func CheckDate(day *string) bool {
+	if *day == "today" {
+		return true
+	} else if *day == "tomorrow" {
+		return true
+	} else {
+		return false
+	}
+}
+
+func IsEmpty(day string) bool {
+	if GetLunch(&day).AnaYemek == "" {
+		return true
+	} else {
+		return false
+	}
 }
 
 func init() {
