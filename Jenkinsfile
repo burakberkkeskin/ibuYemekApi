@@ -15,13 +15,25 @@ pipeline{
 
     stage('docker build') {
       steps {
-        sh 'docker build -t safderun/ibu-yemek-api:latest .'
+        sh 'docker build -t safderun/ibu-yemek-api:build .'
       }
     }
 
     stage ('docker push') {
       steps {
-        sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+
+        sh 'docker login -u ${dockerhub.username} -p ${dockerhub.password}'
+        script{
+          if (env.BRANCH_NAME == 'master') {
+            sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
+            sh 'docker push safderun/ibu-yemek-api:latest'
+          } else if (env.BRANCH_NAME == 'dev') {
+            sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
+            sh 'docker push safderun/ibu-yemek-api:dev'
+          } else {
+            echo 'Unknown branch'
+          }
+        }
         sh 'docker push safderun/ibu-yemek-api:latest'
         mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
