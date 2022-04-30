@@ -30,8 +30,13 @@ pipeline{
     }
 
     stage('deploy') {
-      steps {
-        echo 'Deploying...'
+      def dockerPull 'docker pull safderun/ibu-yemek-api:dev'
+      def dockerRun = 'docker container run -p 3000:3000 --name ibu-yemek-api-dev -d safderun/ibu-yemek-api:dev'
+      sshagent(['ec2-jenkins-agent']) {
+        steps {
+          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com ${dockerPull}'
+          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com ${dockerRun}' 
+        }
       }
     }
   }
