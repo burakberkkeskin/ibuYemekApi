@@ -20,31 +20,28 @@ pipeline{
     }
 
     stage ('master docker push') {
-      steps {
-        when {
-          branch 'master'
-        }
-        steps{
-          sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
-          sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
-          sh 'docker push safderun/ibu-yemek-api:latest'
-          mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
-        }
+      when {
+        branch 'master'
+      }
+      steps{
+        sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+        sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
+        sh 'docker push safderun/ibu-yemek-api:latest'
+        mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
     }
 
     stage ('dev docker push') {
-      steps {
-        when {
-          branch 'dev'
-        }
-        steps{
-          sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
-          sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
-          sh 'docker push safderun/ibu-yemek-api:dev'
-          mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
-        }
+      when {
+        branch 'dev'
       }
+      steps{
+        sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+        sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
+        sh 'docker push safderun/ibu-yemek-api:dev'
+        mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
+      }
+      
     }
 
     stage('deploy') {
