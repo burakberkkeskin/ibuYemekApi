@@ -7,10 +7,19 @@ pipeline{
   stages {
     stage('docker build') {
       steps {
-        echo $GIT_BRANCH
         sh 'docker build -t safderun/ibu-yemek-api:build .'
       }
     }
+
+    stage('master-branch-stuff') {
+      when {
+          branch 'master'
+      }
+      steps {
+        echo 'run this stage - ony if the branch = master branch'
+      }
+    }
+}
 
     stage ('development docker push') {
       steps{
