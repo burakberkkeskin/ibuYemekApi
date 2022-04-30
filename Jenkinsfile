@@ -21,7 +21,8 @@ pipeline{
 
     stage ('docker push') {
       steps {
-        echo env.BRANCH_NAME
+        sh 'printenv'
+        echo env.GIT_BRANCH
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
         script{
           if (env.BRANCH_NAME == 'master') {
