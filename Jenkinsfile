@@ -7,7 +7,7 @@ pipeline{
   stages {
     stage('docker build') {
       steps {
-        sh 'printenv'
+        echo $GIT_BRANCH
         sh 'docker build -t safderun/ibu-yemek-api:build .'
       }
     }
