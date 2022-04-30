@@ -21,7 +21,7 @@ pipeline{
 
     stage ('master docker push') {
       when {
-        branch 'master'
+        branch 'origin/master'
       }
       steps{
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
@@ -33,7 +33,7 @@ pipeline{
 
     stage ('dev docker push') {
       when {
-        branch 'dev'
+        branch 'origin/dev'
       }
       steps{
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
