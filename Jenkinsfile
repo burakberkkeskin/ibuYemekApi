@@ -1,5 +1,9 @@
 pipeline{
   agent any
+  environment {
+    dockerhub=credentials('dockerhub')
+  }
+
   stages {
     stage('scm checkout') {
 
@@ -12,7 +16,14 @@ pipeline{
     stage('docker build') {
       steps {
         sh 'docker build -t safderun/ibu-yemek-api:latest .'
-        mail bcc: '', body: 'IBU Yemek API project built succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
+      }
+    }
+
+    stage ('docker push') {
+      steps {
+        sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+        sh 'docker push safderun/ibu-yemek-api:latest'
+        mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
     }
 
