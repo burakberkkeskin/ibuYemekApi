@@ -1,1 +1,1 @@
-Ibu Yemek Listesini Verisini kolay erişlebilir kılan api.
+Ibu Yemek listesi rest api
