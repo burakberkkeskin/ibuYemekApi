@@ -25,16 +25,15 @@ pipeline{
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
         sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
         sh 'docker push safderun/ibu-yemek-api:dev'
-        mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
     }
 
     stage('deploy') {
       steps{
         sshagent(['ec2-jenkins-agent']) {
-          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com docker pull safderun/ibu-yemek-api:dev'
-          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com docker container run -p 3000:3000 --name ibu-yemek-api-dev -d safderun/ibu-yemek-api:dev' 
+          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com /bin/bahs /home/admin/ibu-yemek-botu/updateContainer.sh'
         }
+        mail bcc: '', body: 'IBU Yemek API project deployed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
       
     }
