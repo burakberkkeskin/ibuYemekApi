@@ -31,7 +31,7 @@ pipeline{
     stage('deploy') {
       steps{
         sshagent(['ec2-jenkins-agent']) {
-          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com ~/ibuYemekBotu/updateContainer.sh'
+          sh 'ssh -o StrictHostKeyChecking=no admin@ec2-3-72-108-27.eu-central-1.compute.amazonaws.com /ibuYemekBotu/updateContainer.sh'
         }
         mail bcc: '', body: 'IBU Yemek API project deployed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
