@@ -11,15 +11,6 @@ pipeline{
       }
     }
 
-    stage('master-branch-stuff') {
-      when {
-          branch 'master'
-      }
-      steps {
-        echo 'run this stage - ony if the branch = master branch'
-      }
-    }
-
     stage ('development docker push') {
       steps{
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
