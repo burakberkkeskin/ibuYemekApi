@@ -21,11 +21,11 @@ pipeline{
 
     stage ('docker push') {
       steps {
-        // sh 'printenv'
-        // echo env.GIT_BRANCH
+        sh 'printenv'
+        echo env.GIT_BRANCH
         sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
         script{
-          if (env.BRANCH_NAME == 'master') {
+          if (env.BRANCH_NAME == 'origin/master') {
             sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
             sh 'docker push safderun/ibu-yemek-api:latest'
           } else if (env.BRANCH_NAME == 'origin/dev') {
