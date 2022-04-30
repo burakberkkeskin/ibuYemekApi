@@ -21,8 +21,7 @@ pipeline{
 
     stage ('docker push') {
       steps {
-
-        sh 'docker login -u ${dockerhub.username} -p ${dockerhub.password}'
+        sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
         script{
           if (env.BRANCH_NAME == 'master') {
             sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
@@ -34,7 +33,6 @@ pipeline{
             echo 'Unknown branch'
           }
         }
-        sh 'docker push safderun/ibu-yemek-api:latest'
         mail bcc: '', body: 'IBU Yemek API project docker pushed succesfully!', cc: '', from: 'Jenkins', replyTo: '', subject: 'ibuYemekApi Build', to: 'safderun@proton.me'
       }
     }
