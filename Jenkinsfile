@@ -25,8 +25,10 @@ pipeline{
 
     stage('deploy') {
       agent {label 'ec2'}
+      environment {
+        IBU_API_BUILD_NUMBER = "$BUILD_NUMBER"
+      }
       steps{
-        env.IBU_API_BUILD_NUMBER="$BUILD_NUMBER"
         sh "/ibuYemekBotu/updateApi.sh $BUILD_NUMBER"
       }
     }
