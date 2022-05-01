@@ -35,8 +35,7 @@ pipeline{
 
   post {
         success {
-          mail bcc: '', body: '''Latest deploy for IBU Yemek Api was successfull!. 
-          Build Number: $BUILD_NUMBER''', cc: '', from: 'Jenkins', replyTo: '', subject: 'IBU Yemek Api Deploy Succesfull!', to: 'safderun@proton.me'
+          mail (bcc: '', body: "Latest deploy for IBU Yemek Api was successfull!. \n Build Number: $BUILD_NUMBER", cc: '', from: 'Jenkins', replyTo: '', subject: 'IBU Yemek Api Deploy Succesfull!', to: 'safderun@proton.me')
         }
         failure {
           mail bcc: '', body: '''Latest deploy for IBU Yemek Api was failed!. 
