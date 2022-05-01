@@ -23,10 +23,10 @@ pipeline{
       }
     }
 
-    //Deployment
     stage('deploy') {
       agent {label 'ec2'}
       steps{
+        sh "export IBU_API_BUILD_NUMBER=1.11"
         sh "/ibuYemekBotu/updateApi.sh $BUILD_NUMBER"
       }
     }
