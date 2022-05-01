@@ -4,7 +4,6 @@ pipeline{
   
   environment {
     dockerhub=credentials('dockerhub')
-    branch=env.GIT_BRANCH
   }
 
   stages {
@@ -16,7 +15,7 @@ pipeline{
 
     stage('docker image master tag'){
       when {
-        environment.branch == 'master'
+        env.GIT_BRANCH == 'master'
       }
       steps {
         sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
@@ -25,7 +24,7 @@ pipeline{
 
     stage('docker image dev tag'){
       when {
-        environment.branch == 'dev'
+        env.GIT_BRANCH == 'dev'
       }
       steps {
         sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
