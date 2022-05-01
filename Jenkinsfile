@@ -30,13 +30,17 @@ pipeline{
       }
     }
 
-    post {
+    
+  }
+
+  post {
         success {
-            echo 'This will run only if successful'
+          mail bcc: '', body: '''Latest deploy for IBU Yemek Api was successfull!. 
+          Build Number: $BUILD_NUMBER''', cc: '', from: 'Jenkins', replyTo: '', subject: 'IBU Yemek Api Deploy Succesfull!', to: 'safderun@proton.me'
         }
         failure {
-            echo 'This will run only if failed'
+          mail bcc: '', body: '''Latest deploy for IBU Yemek Api was failed!. 
+          Build Number: $BUILD_NUMBER''', cc: '', from: 'Jenkins', replyTo: '', subject: '!!!IBU Yemek Api Deploy Failed!!!', to: 'safderun@proton.me'
         }
     }
-  }
 }
