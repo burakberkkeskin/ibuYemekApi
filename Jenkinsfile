@@ -23,10 +23,11 @@ pipeline{
       }
     }
 
+    //Deployment
     stage('deploy') {
       agent {label 'ec2'}
       steps{
-          sh "/ibuYemekBotu/updateAPI.sh $BUILD_NUMBER"
+        sh "/ibuYemekBotu/updateApi.sh $BUILD_NUMBER"
       }
     }
 
