@@ -26,7 +26,7 @@ pipeline{
     stage('deploy') {
       agent {label 'ec2'}
       steps{
-        sh "export IBU_API_BUILD_NUMBER=1.11"
+        env.IBU_API_BUILD_NUMBER="$BUILD_NUMBER"
         sh "/ibuYemekBotu/updateApi.sh $BUILD_NUMBER"
       }
     }
