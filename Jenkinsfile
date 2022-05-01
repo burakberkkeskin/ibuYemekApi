@@ -10,24 +10,7 @@ pipeline{
     stage('docker image build') {
       steps {
         sh 'docker build -t safderun/ibu-yemek-api:build .'
-      }
-    }
-
-    stage('docker image master tag'){
-      when {
-        env.GIT_BRANCH == 'master'
-      }
-      steps {
-        sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:latest'
-      }
-    }
-
-    stage('docker image dev tag'){
-      when {
-        env.GIT_BRANCH == 'dev'
-      }
-      steps {
-        sh 'docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:dev'
+        sh "docker tag safderun/ibu-yemek-api:build safderun/ibu-yemek-api:$BUILD_NUMBER"
       }
     }
   
@@ -39,7 +22,7 @@ pipeline{
     }
 
     stage('deploy') {
-      agen {label 'ec2'}
+      agent {label 'ec2'}
       steps{
           sh '/ibuYemekBotu/updateContainer.sh'
       }
