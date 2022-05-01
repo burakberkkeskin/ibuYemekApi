@@ -26,7 +26,7 @@ pipeline{
     stage('deploy') {
       agent {label 'ec2'}
       steps{
-          sh '/ibuYemekBotu/updateContainer.sh'
+          sh "/ibuYemekBotu/updateAPI.sh $BUILD_NUMBER"
       }
     }
 
