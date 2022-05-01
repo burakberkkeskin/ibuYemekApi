@@ -21,6 +21,12 @@ pipeline{
       }
     }
 
+    // stage('remove unused images') {
+    //   steps {
+    //     sh 'docker rmi $(docker images -f "dangling=true" -q)'
+    //   }
+    // }
+
     stage('deploy') {
       agent {label 'ec2'}
       steps{
