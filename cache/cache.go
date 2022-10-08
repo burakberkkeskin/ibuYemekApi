@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"fmt"
 	"ibu-yemek-api/models"
 	"ibu-yemek-api/services"
 
@@ -41,8 +42,13 @@ func IsEmpty(day string) bool {
 }
 
 func init() {
+	fmt.Println("Cache initialized")
+
 	lunchToday = services.Scrapper("today")
+	fmt.Println("Today's lunch cached")
+
 	lunchTomorrow = services.Scrapper("tomorrow")
+	fmt.Println("Tomorrow's lunch cached")
 
 	c := cron.New()
 	c.AddFunc("10 03 * * *", func() {

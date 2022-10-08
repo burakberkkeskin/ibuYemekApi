@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"ibu-yemek-api/models"
 	"io/ioutil"
 	"log"
@@ -10,26 +11,37 @@ import (
 	"time"
 )
 
-func getHtml() string {
+func getHtml() (string, error) {
 	var url = "http://ibu.edu.tr/yemek-listesi"
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Panic(err)
+		log.Default().Println("Error while getting html")
+		return "", err
 	}
 	defer resp.Body.Close()
 	html, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	// show the HTML code as a string %s
-	return string(html)
+	return string(html), nil
 
 }
 
 func Scrapper(day string) models.Lunch {
 
-	html := getHtml()
-
+	html, err := getHtml()
+	if err != nil {
+		log.Default().Println("Error while getting html")
+		for i := 0; i < 3; i++ {
+			html, err = getHtml()
+			if err == nil {
+				break
+			}
+			fmt.Println("Waiting 5 seconds to get food list again")
+			time.Sleep(5 * time.Second)
+		}
+	}
 	var unixDate int64
 	if day == "today" {
 		date := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day()-1, 21, 0, 0, 0, time.UTC)
@@ -38,7 +50,7 @@ func Scrapper(day string) models.Lunch {
 		date := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 21, 0, 0, 0, time.UTC)
 		unixDate = date.Unix()
 	} else {
-		log.Panic("Wrong day")
+		log.Println("Invalid day")
 	}
 
 	searchString := strconv.FormatInt(unixDate, 10) + `]">([A-Za-zğüşöçıİĞÜŞÖÇ].*)</span>`
